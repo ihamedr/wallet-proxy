@@ -33,5 +33,5 @@ app.post('/save-wallet', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Proxy server running on http://localhost:${PORT}`);
+  console.log(`Proxy server running on ${PORT}`);
 });
