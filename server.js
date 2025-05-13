@@ -12,7 +12,7 @@ const PORT = 3000;
 const WALLET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykpm8j_Xz2wcB94LuM0ExWEACkbRbYyqL5rHW-KB432zlRxFoGXA8G8S8XBkCPpKhE/exec";
 
 // آدرس اسکریپت ثبت رفرال (جدید)
-const REFERRAL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytrE5ojdhZy-hnEr8dHQDUoy9zU9vAXDApQDYknq1HPjX50r0O8PPY8qI3qk0zDdNC9w/exec";
+const REFERRAL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJVPdDc5Y8wPLhACNJaee9rij-BvCLJyA1tiicjmM3WvM1rRj4rj7BFbI4-O_inIb7yQ/exec";
 
 // ثبت کیف‌پول
 app.post('/save-wallet', async (req, res) => {
