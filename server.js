@@ -1,20 +1,22 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const querystring = require('querystring');
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json()); // برای JSON مثل save-wallet
+app.use(bodyParser.urlencoded({ extended: false })); // برای form-urlencoded مثل save-referral
 
 const PORT = 3000;
 
-// آدرس اسکریپت ثبت کیف‌پول
 const WALLET_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykpm8j_Xz2wcB94LuM0ExWEACkbRbYyqL5rHW-KB432zlRxFoGXA8G8S8XBkCPpKhE/exec";
+const REFERRAL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhJNvv21l2LQEDZ_ohxeWa0bUQqNR0ahq7a4HGl4OMuYwyyELaAxggSLjy0qT5ed24xw/exec";
 
-// آدرس اسکریپت ثبت رفرال (جدید)
-const REFERRAL_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJVPdDc5Y8wPLhACNJaee9rij-BvCLJyA1tiicjmM3WvM1rRj4rj7BFbI4-O_inIb7yQ/exec";
-
-// ثبت کیف‌پول
+// ------------------------------
+// ثبت کیف‌پول (JSON)
+// ------------------------------
 app.post('/save-wallet', async (req, res) => {
   const { telegramId, walletAddress } = req.body;
 
@@ -37,7 +39,9 @@ app.post('/save-wallet', async (req, res) => {
   }
 });
 
-// ثبت رفرال
+// ------------------------------
+// ثبت رفرال (form-urlencoded)
+// ------------------------------
 app.post('/save-referral', async (req, res) => {
   const { user_id, username, referrer_id } = req.body;
 
@@ -45,11 +49,13 @@ app.post('/save-referral', async (req, res) => {
     return res.status(400).json({ error: 'Missing user_id' });
   }
 
+  const formBody = querystring.stringify({ user_id, username, referrer_id });
+
   try {
     const response = await fetch(REFERRAL_SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id, username, referrer_id }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formBody,
     });
 
     const text = await response.text();
@@ -61,5 +67,5 @@ app.post('/save-referral', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Proxy server running on ${PORT}`);
+  console.log(`Proxy server running on port ${PORT}`);
 });
